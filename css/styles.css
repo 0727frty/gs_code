@@ -4,9 +4,74 @@ body{
     background-color: #eeeeee;
 }
 
+.pageArea{
+    display: block;
+    text-align: center;
+}
+
+.paging{
+    padding:5px 10px;
+    color:#232f3e;
+    background-color:#ccc;
+    margin:5px 5px;
+    border-radius: 0.3em;
+}
+
+.pagingNow{
+    display: inline;
+    padding:5px 10px;
+    color:#ccc;
+    background-color:#232f3e;
+    margin:5px 5px;
+    border-radius: 0.3em;
+}
+
+.cmt_style{
+    background-color:white;
+    border-radius:0.2em;
+    padding:10px 20px;
+    display: block;
+}
+
 .navbar-default {
     background-color: #232f3e;
     padding:10px;
+}
+
+.navbar-login {
+    background-color: #232f3e;
+}
+
+.navbar-admin {
+    background-color: #ccc;
+    padding:5px 10px;
+}
+
+.user_rows {
+    margin:15px 25px;
+    padding:10px 0;
+    border-bottom: 1px solid #232f3e;
+}
+
+.user_items {
+    margin-left:15px;
+}
+
+.user_edits {
+    padding:5px;
+    border:1px solid #232f3e;
+    text-decoration: none;
+    color:#232f3e;
+}
+
+.user_kanri{
+    color:#232f3e;
+    text-decoration:none;
+    padding:5px;
+    border:2px solid #232f3e;
+    font-weight: bold;
+    display: table;
+    margin:16px 20px 16px 0;
 }
 
 .jumbotron {
@@ -20,6 +85,14 @@ h1 a{
     color:white;
     text-decoration:none;
     font-style:oblique;
+}
+
+.admin span{
+    text-decoration:none;
+    font-style:oblique;
+    font-size:24px;
+    font-weight: bold;
+    color:#232f3e;
 }
 
 #navList{
@@ -142,6 +215,10 @@ h1{
     margin-right:auto;
 }
 
+.admin{
+    margin-right:auto;
+}
+
 .center{
     text-align: center;
 }
@@ -165,7 +242,21 @@ h1{
 
 .form_items{
     text-align: center;
-    margin:0 20%;
+    margin:0 10%;
+}
+
+.tag{
+    padding:5px 10px;
+    background-color:#f9d8ae;
+    border-radius:0.2em;
+    color:#232f3e;
+    font-size:16px;
+    border:1px solid #232f3e;
+    font-style:oblique;
+}
+
+.src_check{
+    margin:0 5px;
 }
 
 /* index.php */

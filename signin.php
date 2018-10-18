@@ -8,15 +8,7 @@
 <body>
 
 <!-- Head[Start] -->
-<header>
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <h1 class="navbar-header">
-          <a class="navbar-brand" href="index.php">BookMark.do</a>
-        </h1>
-      </div>
-    </nav>
-</header>
+<?php include("header_logout.php") ?>
 <!-- Head[End] -->
 
 <!-- Main[Start] -->

@@ -9,8 +9,25 @@ $pdo = db_con();
 //２．データ登録SQL作成
 $name = $_SESSION["name"];
 $uid = $_SESSION["id"];
-$stmt = $pdo->prepare("SELECT * FROM gs_bm_table WHERE uid=:uid");
-$stmt->bindValue(':uid', $uid, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
+
+$st = $pdo->prepare("SELECT * FROM gs_bm_table WHERE uid=:uid");
+$st->bindValue(':uid', $uid, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
+$stat = $st->execute();
+
+
+if (isset($_REQUEST['page']) && is_numeric($_REQUEST['page'])) {
+  $page = $_REQUEST['page'];
+} else {
+  $page = 1;
+}
+
+$start = 10 * ($page - 1);
+
+// $name = $_SESSION["name"];
+// $uid = $_SESSION["id"];
+
+$stmt = $pdo->prepare("SELECT * FROM gs_bm_table WHERE uid=$uid ORDER BY id DESC LIMIT ?,10");
+$stmt->bindParam(1, $start, PDO::PARAM_INT);
 $status = $stmt->execute();
 
 //３．データ表示
@@ -40,6 +57,12 @@ if($status==false) {
   }
 }
 
+$sql = "SELECT count(*) as cnt FROM gs_bm_table WHERE uid=$uid"; 
+$counts = $pdo->prepare($sql);
+$status_ = $counts->execute();
+$count = $counts->fetch();
+$max_page = floor($count['cnt'] / 10) + 1;
+
 ?>
 
 
@@ -50,11 +73,14 @@ if($status==false) {
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BookMark.do</title>
-<link rel="stylesheet" href="css/range.css">
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body id="main">
 <!-- Head[Start] -->
+<?php if($_SESSION["kanri_flg"]=="1"){ ?> 
+  <?php include("admin.php") ?>
+<?php } ?>
+
 <?php include("header.php") ?>
 <!-- Head[End] -->
 
@@ -63,15 +89,39 @@ if($status==false) {
     <form method="post" action="search.php">
       <input id="search_box" name="search">
       <input id="search_btn" type="submit" value="検索">
+      <p>
+        <span><input type="hidden" name="biz" value="0"></span>
+        <span class="src_check"><input type="checkbox" name="biz" value="1" id="biz"><label for="biz">business</label></span>
+        <span><input type="hidden" name="nvl" value="0"></span>
+        <span class="src_check"><input type="checkbox" name="nvl" value="1" id="nvl"><label for="nvl">novel</label></span>
+        <span><input type="hidden" name="cmic" value="0"></span>
+        <span class="src_check"><input type="checkbox" name="cmic" value="1" id="cmic"><label for="cmic">comic</label></span>
+        <span><input type="hidden" name="tec" value="0"></span>
+        <span class="src_check"><input type="checkbox" name="tec" value="1" id="tec"><label for="tec">tecnology</label></span>
+        <span><input type="hidden" name="other" value="0"></span>
+        <span class="src_check"><input type="checkbox" name="other" value="1" id="other"><label for="other">other</label></span>
+      </p>
     </form>
 </div>
 <div>
     <div class="container bookmarkList">
-      <p class="listTitle"><?php echo $name ?>さんのBookMark<span class="bookNum">(<?php echo $stmt->rowCount()."冊" ?></span>)
+      <p class="listTitle"><?php echo $name ?>さんのBookMark<span class="bookNum">(<?php echo $st->rowCount()."冊" ?></span>)
       </p>
       <?=$view?>
     </div>
 </div>
+
+<span class="pageArea">
+  <?php if ($page >= 2): ?>
+    <a class="paging" href="index.php?page=<?= ($page-1); ?>"><?= ($page-1); ?></a>
+  <?php endif; ?>
+
+  <p class="pagingNow"><?= ($page); ?></p>
+  
+  <?php if ($page < $max_page): ?>
+    <a class="paging" href="index.php?page=<?= ($page+1); ?>"><?= ($page+1); ?></a>
+  <?php endif; ?>
+</span>
 <!-- Main[End] -->
 <?php include("footer.php") ?>
 </body>

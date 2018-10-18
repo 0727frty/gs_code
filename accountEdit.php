@@ -58,7 +58,7 @@ if($status==false) {
         <div class="form_items">
             <p class="right"><span class="item_name">名前：</span><input id="input_form" type="text" name="name" value="<?=$row["name"] ?>"></p>
             <p class="right"><span class="item_name">ID：</span><input id="input_form" type="text" name="lid" value="<?=$row["lid"] ?>"></p>
-            <p class="right"><span class="item_name">PASSWORD：</span><input id="input_form" type="text" name="lpw" value="<?=$row["lpw"] ?>"></p>
+            <p class="right"><span class="item_name">新しいPASSWORD：</span><input id="input_form" type="text" name="lpw" value=""></p>
         </div>
         
         <input id="btn2" class="block" type="submit" value="更新する">

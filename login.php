@@ -12,15 +12,16 @@
 
 <!-- Head[Start] -->
 <header>
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-login">
       <div class="container-fluid">
         <h1 class="navbar-header">
-          <a class="navbar-brand" href="index.php">BookMark.do</a>
+          <a class="navbar-brand" href="index_.php">BookMark.do</a>
         </h1>
       </div>
     </nav>
 </header>
 <!-- Head[End] -->
+
 
 <!-- Main[Start] -->
 <form method="post" action="login_act.php">
@@ -29,7 +30,7 @@
 
           <div class="form_items">
             <p class="right"><span class="item_name">ID：</span><input id="input_form" type="text" name="lid"></label></p>
-            <p class="right"><span class="item_name">PW：</span><input id="input_form" type="text" name="lpw"></label></p>
+            <p class="right"><span class="item_name">PW：</span><input id="input_form" type="password" name="lpw"></label></p>
           </div>
 
           <input id="btn2" class="block" type="submit" value="ログイン">

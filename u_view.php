@@ -27,6 +27,27 @@ if($status==false) {
     $row = $stmt->fetch();
 }
 
+$biz = "";
+$nvl = "";
+$cmic = "";
+$tec = "";
+$other = "";
+if($row["biz"] == 1){
+  $biz = "checked";
+}
+if($row["nvl"] == 1){
+  $nvl = "checked";
+}
+if($row["cmic"] == 1){
+  $cmic = "checked";
+}
+if($row["tec"] == 1){
+  $tec = "checked";
+}
+if($row["other"] == 1){
+  $other = "checked";
+}
+
 ?>
 
 
@@ -47,12 +68,22 @@ if($status==false) {
 <form method="post" action="update.php" enctype="multipart/form-data">
   <div class="">
     <div class="view_items">
-      <p class="input_item"><span class="item_name">書籍タイトル</span></p><input id="input_box" type="text" name="name" value="<?=$row["name"] ?>">
-      <p class="input_item"><span class="item_name">書籍のURL</span></p><input id="input_box" type="text" name="url" value="<?=$row["url"] ?>">
+      <p>書籍タイトル：<?=$row["name"] ?></p>
+      <p>書籍のURL：<a href='<?=$row["url"] ?>'><?=$row["url"] ?></a></p>
       <p class="input_item"><span class="item_name">書籍のimg</span></p>
-      <p class="edit_fileName">設定中の画像：<?=$row["img"] ?></p>
       <img class="editImg" src="files/<?=$row["img"] ?>"><br/>
-      <input type="file" name="img" size="30">
+      <p class="input_item"><span class="item_name">タグ</span>
+        <span><input type="hidden" name="biz" value="0"></span>
+        <span><input type="checkbox" name="biz" value="1" <?=$biz ?>>business</span>
+        <span><input type="hidden" name="nvl" value="0"></span>
+        <span><input type="checkbox" name="nvl" value="1" <?=$nvl ?>>novel</span>
+        <span><input type="hidden" name="cmic" value="0"></span>
+        <span><input type="checkbox" name="cmic" value="1" <?=$cmic ?>>comic</span>
+        <span><input type="hidden" name="tec" value="0"></span>
+        <span><input type="checkbox" name="tec" value="1" <?=$tec ?>>tecnology</span>
+        <span><input type="hidden" name="other" value="0"></span>
+        <span><input type="checkbox" name="other" value="1" <?=$other ?>>other</span>
+      </p>
       <p class="input_item"><span class="item_name">コメント</span></p><textArea id="input_area" name="cmt" rows="4" cols="40"><?=$row["cmt"] ?></textArea>
     </div>
       <input type="hidden" name="id" value="<?=$row["id"] ?>">

@@ -8,7 +8,8 @@ include("funcs.php");
 $pdo = db_con();
 
 //３．UPDATE
-$sql ="DELETE FROM gs_user_table WHERE id=:id"; 
+// $sql ="DELETE FROM gs_user_table WHERE id=:id"; 
+$sql ="UPDATE gs_user_table SET life_flg=1 WHERE id=:id";
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':id', $id, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
 $status = $stmt->execute();

@@ -1,34 +1,42 @@
 <?php
-
-//fileをアップロードする処理
-if (is_uploaded_file($_FILES["img"]["tmp_name"])) {
-  if (move_uploaded_file($_FILES["img"]["tmp_name"], "files/" . $_FILES["img"]["name"])) {
-    chmod("files/" . $_FILES["img"]["name"], 0644);
-    echo $_FILES["img"]["name"] . "をアップロードしました。";
-  } else {
-    echo "ファイルをアップロードできません。";
-  }
-} else {
-  echo "ファイルが選択されていません。";
-}
-
 //1. POSTデータ取得(id,name,url,cmt)
-$id   = $_POST["id"];
-$name = $_POST["name"];
-$url  = $_POST["url"];
-$img  = $_FILES["img"]["name"];
+$id = $_POST["id"];
+$biz = $_POST["biz"];
+$nvl = $_POST["nvl"];
+$cmic = $_POST["cmic"];
+$tec = $_POST["tec"];
+$other = $_POST["other"];
 $cmt  = $_POST["cmt"];
 
-//2. DB接続します
 include("funcs.php");
 $pdo = db_con();
 
+$sql = "SELECT * FROM gs_bm_table WHERE id=:id"; 
+$stmt = $pdo->prepare($sql);
+$stmt->bindValue(':id', $id, PDO::PARAM_INT);
+$status = $stmt->execute();
+
+if($status==false) {
+  sqlError($stmt);
+}else{
+  $row = $stmt->fetch();
+}
+
+$name = $row["name"];
+$url  = $row["url"];
+$img = $row["img"];
+
 //３．UPDATE
-$sql ="UPDATE gs_bm_table SET name=:name,url=:url,img=:img,cmt=:cmt WHERE id=:id"; 
+$sql ="UPDATE gs_bm_table SET name=:name,url=:url,img=:img,biz=:biz,nvl=:nvl,cmic=:cmic,tec=:tec,other=:other,cmt=:cmt WHERE id=:id"; 
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':name', $name, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
 $stmt->bindValue(':url', $url, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
 $stmt->bindValue(':img', $img, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
+$stmt->bindValue(':biz', $biz, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
+$stmt->bindValue(':nvl', $nvl, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
+$stmt->bindValue(':cmic', $cmic, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
+$stmt->bindValue(':tec', $tec, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
+$stmt->bindValue(':other', $other, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
 $stmt->bindValue(':cmt', $cmt, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
 $stmt->bindValue(':id', $id, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
 $status = $stmt->execute();
