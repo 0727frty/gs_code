@@ -11,7 +11,7 @@ function db_con()
 {
     //1.  DB接続します
     try {
-      return new PDO('mysql:dbname=msg_db;charset=utf8;host=localhost','root','');
+      return new PDO('mysql:dbname=gs_db;charset=utf8;host=localhost','root','');
     } catch (PDOException $e) {
       exit('DB_CONNECTION_ERROR:'.$e->getMessage());
     }

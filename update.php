@@ -1,44 +1,50 @@
 <?php
-//1. POSTデータ取得(id,name,url,cmt)
-$id = $_POST["id"];
-$biz = $_POST["biz"];
-$nvl = $_POST["nvl"];
-$cmic = $_POST["cmic"];
-$tec = $_POST["tec"];
-$other = $_POST["other"];
-$cmt  = $_POST["cmt"];
+//Fileアップロードチェック
+if (isset($_FILES["image"]["tmp_name"] )) {
+	//情報取得
+	$file_name = $_FILES["image"]["tmp_name"];
+	
+	//***File名の変更***
+	$extension = pathinfo($file_name, PATHINFO_EXTENSION); //拡張子取得(jpg, png, gif)
+	$uniq_name = date("YmdHis").md5(session_id()) . "." . $extension;  //ユニークファイル名作成
+	$file_name = $uniq_name; //ユニークファイル名とパス
+   
+	$img="";  //画像表示orError文字を保持する変数
+	// FileUpload [--Start--]
+	if ( is_uploaded_file( $_FILES["image"]["tmp_name"] ) ) {
+		if ( move_uploaded_file( $_FILES["image"]["tmp_name"], "member_picture/" . $file_name ) ) {
+			chmod("member_picture/" . $file_name, 0644 );
+		} else {
+		  echo "ファイルをアップロードできません。";
+		}
+	} 
+  }else{
+	$img = "画像が送信されていません"; //Error文字
+}
 
+session_start();
+
+//1. POSTデータ取得(id,name,url,cmt)
+$id = $_SESSION["id"];
+$name = $_POST["name"];
+$email   = $_POST["email"];
+$password  = $_POST["password"];
+$image  = $file_name;
+$hash = password_hash ($password, PASSWORD_DEFAULT);
+
+//2. DB接続します
 include("funcs.php");
 $pdo = db_con();
 
-$sql = "SELECT * FROM gs_bm_table WHERE id=:id"; 
-$stmt = $pdo->prepare($sql);
-$stmt->bindValue(':id', $id, PDO::PARAM_INT);
-$status = $stmt->execute();
-
-if($status==false) {
-  sqlError($stmt);
-}else{
-  $row = $stmt->fetch();
-}
-
-$name = $row["name"];
-$url  = $row["url"];
-$img = $row["img"];
-
 //３．UPDATE
-$sql ="UPDATE gs_bm_table SET name=:name,url=:url,img=:img,biz=:biz,nvl=:nvl,cmic=:cmic,tec=:tec,other=:other,cmt=:cmt WHERE id=:id"; 
+$hash = password_hash ($password, PASSWORD_DEFAULT);
+$sql ="UPDATE members SET name=:name,email=:email,password=:password,picture=:picture WHERE id=:id"; 
 $stmt = $pdo->prepare($sql);
-$stmt->bindValue(':name', $name, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
-$stmt->bindValue(':url', $url, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
-$stmt->bindValue(':img', $img, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
-$stmt->bindValue(':biz', $biz, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
-$stmt->bindValue(':nvl', $nvl, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
-$stmt->bindValue(':cmic', $cmic, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
-$stmt->bindValue(':tec', $tec, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
-$stmt->bindValue(':other', $other, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
-$stmt->bindValue(':cmt', $cmt, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
 $stmt->bindValue(':id', $id, PDO::PARAM_INT);  //Integer（数値の場合 PDO::PARAM_INT)
+$stmt->bindValue(':name', $name, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
+$stmt->bindValue(':email', $email, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
+$stmt->bindValue(':password', $hash, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
+$stmt->bindValue(':picture', $image, PDO::PARAM_STR);  //Integer（数値の場合 PDO::PARAM_INT)
 $status = $stmt->execute();
 
 //４．データ登録処理後
@@ -49,7 +55,7 @@ if($status==false){
   sqlError($stmt);
 }else{
   //５．index.phpへリダイレクト
-  header("Location: index.php");
+  header("Location: post.php");
   exit;
 }
 ?>

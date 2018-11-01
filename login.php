@@ -2,45 +2,32 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>ログイン</title>
-  <link rel="stylesheet" href="css/range.css">
-  <link rel="stylesheet" href="css/styles.css">
-  <style>div{padding: 10px;font-size:16px;}</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Memory</title>
+  <link rel="stylesheet" href="/msg/css/style.css" />
 </head>
 <body>
+<div id="wrap">
+<?php include("header_logout.php") ?>
+  <div id="content">
+		<p>次のフォームに必要事項をご記入ください</p>
+    <!-- Main[Start] -->
+    <form method="post" action="login_act.php">
+      <dl>
+        <dt>メールアドレス</dt>
+				<dd class="mb20">
+					<input type="text" name="email" size="35" maxlength="255">
+				</dd>
 
+				<dt>パスワード</dt>
+				<dd class="mb20">
+					<input type="password" name="password" size="10" maxlength="20">
+				</dd>
+      <div><input id="btn" type="submit" value="ログイン"></div>
+    </form>
+  </div>
+</div>
 
-<!-- Head[Start] -->
-<header>
-    <nav class="navbar navbar-login">
-      <div class="container-fluid">
-        <h1 class="navbar-header">
-          <a class="navbar-brand" href="index_.php">BookMark.do</a>
-        </h1>
-      </div>
-    </nav>
-</header>
-<!-- Head[End] -->
-
-
-<!-- Main[Start] -->
-<form method="post" action="login_act.php">
-    <div class="container">
-          <p class="itemTitle">ログインフォーム</p>
-
-          <div class="form_items">
-            <p class="right"><span class="item_name">ID：</span><input id="input_form" type="text" name="lid"></label></p>
-            <p class="right"><span class="item_name">PW：</span><input id="input_form" type="password" name="lpw"></label></p>
-          </div>
-
-          <input id="btn2" class="block" type="submit" value="ログイン">
-    </div>
-
-    <div class="center">
-      <a href="signin.php">会員登録していない方はこちら</a>
-    </div>
-
-</form>
-<?php include("footer.php") ?>
 </body>
 </html>

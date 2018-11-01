@@ -1,19 +1,20 @@
 <?php
-//必ずsession_startは最初に記述
 session_start();
 
-//sessionを初期化（空っぽにする）
+// セッション情報を削除
 $_SESSION = array();
-
-//Cookieを保持してあるsessionidの保存期間を過去にして破棄
-if(isset($_COOKIE[session_name()])){
-    setcookie(session_name(), '',time()-42000, '/');
+if (ini_get("session.use_cookies")) {
+	$params = session_get_cookie_params();
+	setcookie(session_name(), '', time() - 42000,
+		$params["path"], $params["domain"],
+		$params["secure"], $params["httponly"]
+	);
 }
-
-//サーバ側での、セッションIDの破棄
 session_destroy();
 
-//処理後、index.phpへリダイレクト
-header("Location:index_.php");
-exit();
+// Cookie情報も削除
+setcookie('email', '', time()-3600);
+setcookie('password', '', time()-3600);
+
+header('Location: login.php'); exit();
 ?>
